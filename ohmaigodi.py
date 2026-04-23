@@ -50,14 +50,12 @@ while True:
             print("Esse veiculo ja esta cadastrado.")
         else:
             cor = input("Cor: ").strip().lower()
-            tipo = input("Tipo do veiculo: ").strip().lower()
             dono = input("Nome do dono: ").strip()
             perfil = input("Perfil do dono (aluno, professor, funcionario, coordenador, diretor, visitante): ").strip().lower()
 
             veiculos[placa] = {
                 "placa": placa,
                 "cor": cor,
-                "tipo": tipo,
                 "dono": dono,
                 "perfil": perfil,
                 "estacionamento": None,
@@ -170,12 +168,13 @@ while True:
         while True:
             print("\nCONSULTAS")
             print("1 - Onde esta um carro pela placa")
-            print("2 - Quantos carros existem por cor")
-            print("3 - Quantos veiculos estacionados existem por perfil")
-            print("4 - Verificar se ha aluno em area proibida")
-            print("5 - Ver qual estacionamento esta mais cheio")
-            print("6 - Listar veiculos estacionados")
-            print("7 - Mostrar historico de movimentacoes")
+            print("2 - Mostrar todos os dados de um veiculo pela placa")
+            print("3 - Quantos carros existem por cor")
+            print("4 - Quantos veiculos estacionados existem por perfil")
+            print("5 - Verificar se ha aluno em area proibida")
+            print("6 - Ver qual estacionamento esta mais cheio")
+            print("7 - Listar veiculos estacionados")
+            print("8 - Mostrar historico de movimentacoes")
             print("0 - Voltar")
 
             consulta = input("Escolha uma consulta: ").strip()
@@ -196,6 +195,28 @@ while True:
                     print("Entrada:", veiculos[placa]["entrada"])
 
             elif consulta == "2":
+                placa = input("Digite a placa: ").strip().upper()
+
+                if placa not in veiculos:
+                    print("Veiculo nao encontrado.")
+                else:
+                    print("Placa:", veiculos[placa]["placa"])
+                    print("Cor:", veiculos[placa]["cor"])
+                    print("Dono:", veiculos[placa]["dono"])
+                    print("Perfil:", veiculos[placa]["perfil"])
+
+                    if veiculos[placa]["estacionamento"] is None:
+                        print("Status: Nao estacionado no momento")
+                        print("Estacionamento: Nenhum")
+                        print("Vaga: Nenhuma")
+                        print("Entrada: Nenhuma")
+                    else:
+                        print("Status: Estacionado")
+                        print("Estacionamento:", veiculos[placa]["estacionamento"].title())
+                        print("Vaga:", veiculos[placa]["vaga"])
+                        print("Entrada:", veiculos[placa]["entrada"])
+
+            elif consulta == "3":
                 cor = input("Digite a cor: ").strip().lower()
                 total_cor = 0
 
@@ -204,7 +225,7 @@ while True:
 
                 print("Quantidade de veiculos cadastrados com essa cor:", total_cor)
 
-            elif consulta == "3":
+            elif consulta == "4":
                 perfil = input("Digite o perfil: ").strip().lower()
                 total_perfil_estacionado = 0
 
@@ -214,7 +235,7 @@ while True:
 
                 print("Quantidade de veiculos estacionados desse perfil:", total_perfil_estacionado)
 
-            elif consulta == "4":
+            elif consulta == "5":
                 encontrou_irregularidade = False
 
                 for placa in veiculos:
@@ -232,7 +253,7 @@ while True:
                 if encontrou_irregularidade is False:
                     print("Nao ha alunos ou outros perfis em area proibida.")
 
-            elif consulta == "5":
+            elif consulta == "6":
                 nome_mais_cheio = ""
                 percentual_mais_cheio = -1
 
@@ -254,7 +275,7 @@ while True:
                     print("Estacionamento mais cheio:", nome_mais_cheio.title())
                     print("Taxa de ocupacao:", round(percentual_mais_cheio * 100, 2), "%")
 
-            elif consulta == "6":
+            elif consulta == "7":
                 existe_estacionado = False
 
                 for placa in veiculos:
@@ -262,7 +283,6 @@ while True:
                         existe_estacionado = True
                         print("\nPlaca:", placa)
                         print("Cor:", veiculos[placa]["cor"])
-                        print("Tipo:", veiculos[placa]["tipo"])
                         print("Dono:", veiculos[placa]["dono"])
                         print("Perfil:", veiculos[placa]["perfil"])
                         print("Estacionamento:", veiculos[placa]["estacionamento"].title())
@@ -272,7 +292,7 @@ while True:
                 if existe_estacionado is False:
                     print("Nao ha veiculos estacionados no momento.")
 
-            elif consulta == "7":
+            elif consulta == "8":
                 if len(movimentacoes) == 0:
                     print("Ainda nao existem movimentacoes registradas.")
                 else:
