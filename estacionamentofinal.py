@@ -1,3 +1,5 @@
+from datetime import datetime
+
 print("=" * 45)
 print("               MENU PRINCIPAL")
 print("=" * 45)
@@ -16,7 +18,8 @@ print("""
       12- Verificar veículos em local errado
       13- Mostrar ocupação geral
       14- Histórico de entrada e saída
-      15- Sair
+      15- Histórico geral com data e hora
+      16- Sair
       """)
 
 op = 0
@@ -89,6 +92,8 @@ while True:
                 dados["estacionado"] = "NAO"
                 dados["local"] = ""
                 veiculos.append(dados)
+                data_hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                historico.append({"data_hora": data_hora, "placa": placa, "acao": "CADASTRO", "local": "SISTEMA"})
 
                 if perfil == "PROFESSOR":
                     professorestacionamento.append(dados)
@@ -164,7 +169,8 @@ while True:
                                     vp -= 1
                                     veiculo["estacionado"] = "SIM"
                                     veiculo["local"] = local
-                                    historico.append({"placa": placa, "acao": "ENTRADA", "local": local})
+                                    data_hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                                    historico.append({"data_hora": data_hora, "placa": placa, "acao": "ENTRADA", "local": local})
                                     print("Entrada registrada com sucesso!\n")
                                 else:
                                     print("Não existem vagas disponíveis nesse estacionamento.\n")
@@ -180,7 +186,8 @@ while True:
                                     vc -= 1
                                     veiculo["estacionado"] = "SIM"
                                     veiculo["local"] = local
-                                    historico.append({"placa": placa, "acao": "ENTRADA", "local": local})
+                                    data_hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                                    historico.append({"data_hora": data_hora, "placa": placa, "acao": "ENTRADA", "local": local})
                                     print("Entrada registrada com sucesso!\n")
                                 else:
                                     print("Não existem vagas disponíveis nesse estacionamento.\n")
@@ -192,7 +199,8 @@ while True:
                                 vg -= 1
                                 veiculo["estacionado"] = "SIM"
                                 veiculo["local"] = local
-                                historico.append({"placa": placa, "acao": "ENTRADA", "local": local})
+                                data_hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                                historico.append({"data_hora": data_hora, "placa": placa, "acao": "ENTRADA", "local": local})
                                 print("Entrada registrada com sucesso!\n")
                             else:
                                 print("Não existem vagas disponíveis nesse estacionamento.\n")
@@ -225,7 +233,8 @@ while True:
 
                     veiculo["estacionado"] = "NAO"
                     veiculo["local"] = ""
-                    historico.append({"placa": placa, "acao": "SAIDA", "local": local})
+                    data_hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                    historico.append({"data_hora": data_hora, "placa": placa, "acao": "SAIDA", "local": local})
                     print("Saída registrada com sucesso!\n")
 
         if encontrado == False:
@@ -248,6 +257,8 @@ while True:
                 print(f"Cor: {veiculo['cor']}")
                 print(f"Estacionado: {veiculo['estacionado']}")
                 print(f"Local: {veiculo['local']}\n")
+                data_hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                historico.append({"data_hora": data_hora, "placa": placa, "acao": "BUSCA POR PLACA", "local": "SISTEMA"})
 
         if encontrado == False:
             print("Veículo não encontrado.\n")
@@ -265,6 +276,8 @@ while True:
                 print(f"Local: {veiculo['local']}\n")
 
         print(f"Quantidade de veículos dessa cor estacionados: {quantidade}\n")
+        data_hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        historico.append({"data_hora": data_hora, "placa": "-", "acao": "BUSCA POR COR " + cor, "local": "SISTEMA"})
 
     if op == 11:
         local = input("Digite o local de estacionamento (administrativo, servidores, geral): ").upper()
@@ -320,14 +333,27 @@ while True:
             print("Ainda não existe histórico.\n")
         else:
             for i in range(len(historico)):
+                if historico[i]["acao"] == "ENTRADA" or historico[i]["acao"] == "SAIDA":
+                    print(f"Registro {i + 1}:")
+                    print(f"Data e hora: {historico[i]['data_hora']}")
+                    print(f"Placa: {historico[i]['placa']}")
+                    print(f"Ação: {historico[i]['acao']}")
+                    print(f"Local: {historico[i]['local']}\n")
+
+    if op == 15:
+        if len(historico) == 0:
+            print("Ainda não existe histórico.\n")
+        else:
+            for i in range(len(historico)):
                 print(f"Registro {i + 1}:")
+                print(f"Data e hora: {historico[i]['data_hora']}")
                 print(f"Placa: {historico[i]['placa']}")
                 print(f"Ação: {historico[i]['acao']}")
                 print(f"Local: {historico[i]['local']}\n")
 
-    if op == 15:
+    if op == 16:
         print("Sistema encerrado.")
         break
 
-    if op < 1 or op > 15:
+    if op < 1 or op > 16:
         print("Opção inválida.\n")
